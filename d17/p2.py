@@ -2,20 +2,20 @@ import itertools
 import copy
 import hashlib
 
-FILENAME = "tin.txt"
+FILENAME = "in.txt"
 
 with open(FILENAME) as f:
     data = f.read().strip().split("\n")
 
 salt = data[0]
 
-acceptable_hash_symbols = "abcdef"
+acceptable_hash_symbols = "bcdef"
 
 
 def possible_directions(path: str, coords):
     x, y = coords
-    # if (x,y) == (3,3):
-    #     return []
+    if (x,y) == (3,3):
+        return []
     hash_value = hashlib.md5((salt + path).encode()).hexdigest()
     directions = []
     if y > 0 and hash_value[0] in acceptable_hash_symbols:
@@ -51,10 +51,14 @@ while paths:
         if positions[working_path] == (3,3):
             #paths.pop()
             if len(working_path) > longest_path:
+                if len(working_path) > 40:
+                    for n in range(len(working_path)):
+                        sub_path = working_path[: 0 - n]
+                        print(f"{positions[sub_path]} - {possible_directions(sub_path, positions[sub_path])}")
                 longest_path = len(working_path)
                 print(f"new longest: {longest_path}")
-                print(working_path)
-                print(positions[working_path])
+                # print(working_path)
+                # print(positions[working_path])
             working_path = working_path[:-1]
         else:
             # if positions[working_path] == (3,3):
