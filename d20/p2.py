@@ -7,6 +7,10 @@ FILENAME = "in.txt"
 with open(FILENAME) as f:
     data = f.read().strip().split("\n")
 
+if FILENAME == "tin.txt":
+    INT_MAX = 11
+else:
+    INT_MAX = 4294967295
 
 class mrange:
     def __init__(self):
@@ -65,8 +69,22 @@ class mrange:
         self._flatten()
 
     def invert(self, max:int):
-        new_starts = []
-        new_ends = []
+        new_starts = [end + 1 for end in self.ends]
+        new_ends = [start - 1 for start in self.starts]
+        if new_ends[0] <= 0:
+            new_ends.pop(0)
+        else:
+            new_starts.append(0)
+        if new_starts[-1] >= max + 1:
+            new_starts.pop(-1)
+        else:
+            new_ends.append(max)
+        self.starts = new_starts
+        self.ends = new_ends
+        self._flatten()
+    
+    def __len__(self):
+        return sum((b-a)+1 for a,b in zip(self.starts,self.ends))
         
 
 ranges = mrange()
@@ -74,3 +92,10 @@ for row in data:
     ranges.digest(row)
 
 print(ranges.ends[0] + 1)
+
+ranges.invert(INT_MAX)
+
+print(ranges.starts[0])
+
+print(len(ranges))
+

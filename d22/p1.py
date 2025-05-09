@@ -29,3 +29,5 @@ for n1,n2 in itertools.permutations(nodes,2):
     count += 1
 
 print(count)
+
+print(1-((8191/8192) ** 5678))
